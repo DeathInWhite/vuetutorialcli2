@@ -23,11 +23,21 @@ var config = {
 // Initialize Firebase
 firebase.initializeApp(config);
 
-
 Vue.config.productionTip = false
 
-new Vue({
-    router,
-    store,
-    render: h => h(App)
-}).$mount('#app')
+firebase.auth().onAuthStateChanged((user)=>{
+    if(user){
+        store.dispatch('detectarUsuario',{email:user.email,uid:user.uid})
+    }else{
+        store.dispatch('detectarUsuario',null)
+
+    }
+
+    new Vue({
+        router,
+        store,
+        render: h => h(App)
+    }).$mount('#app')
+})
+
+
